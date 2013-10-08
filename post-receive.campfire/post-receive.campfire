@@ -177,12 +177,22 @@ function notify() {
       https://${org_name}.campfirenow.com/room/${room_id}/speak.xml >/dev/null 2>&1
 }
 
+
 # MAIN PROGRAM
 # Read all refs from stdin, notify campfire for each
-while read line; do
-  set -- $line
-  notify $*
-  RET=$?
-done
+# Allow dual mode: run from the command line just like the update hook, or if
+# no arguments are given then run as a hook script
+if [ -n "$1" -a -n "$2" -a -n "$3" ]; then
+        # Output to the terminal in command line mode - if someone wanted to
+        # resend an email; they could redirect the output to sendmail themselves
+        set -- $line
+        notify $2 $3 $1
+        RET=$?
+else
+        while read oldrev newrev refname
+        do
+          notify $oldrev $newrev $refname
+        done
+fi
 
 exit $RET
