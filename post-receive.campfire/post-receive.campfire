@@ -174,7 +174,7 @@ function notify() {
   # send to the campfire API
   curl -u ${api_key}:x -H 'Content-Type: application/xml' \
       -d "<message><type>PasteMessage</type><body>${msg}</body></message>" \
-      https://${org_name}.campfirenow.com/room/462735/speak.xml >/dev/null 2>&1
+      https://${org_name}.campfirenow.com/room/${room_id}/speak.xml >/dev/null 2>&1
 }
 
 # MAIN PROGRAM
